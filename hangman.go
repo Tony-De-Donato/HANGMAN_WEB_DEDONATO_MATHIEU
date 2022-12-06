@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func main() {
+func principale() {
 	//
 	fmt.Println("Bienvenue dans notre jeu hangman.")
 	menu()
