@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="gauche">
+        <p>Voici le mot :</p>
+        <p id="atrouver"><strong>{{ .mot }}</strong></p>
+        <p>Il vous reste {{ .tentatives }} tentatives.</p>
+        <p>Quelle lettre / Quel mot voulez vous essayer ?</p>
+        <form>
+            <input type="text" name="reponse">
+            <input type="submit">
+        </form>
+        <p>Voici les lettres ou mots que vous avez déjà essayé.</p>
+        <p> {{ .deja }}</p>
+    </div>
+</body>
+
+</html>
+
+<style>
+    #gauche {
+        display: flex;
+        width: 40%;
+        height: 100%;
+        align-items: center;
+        flex-direction: column;
+        font-size: x-large;
+        font-family: Arial, Helvetica, sans-serif;
+
+    }
+
+    body {
+        background: linear-gradient(-275deg, #8256cc97, #17b9bc76);
+    }
+
+    #atrouver {
+        font-size: xxx-large;
+    }
+</style>
