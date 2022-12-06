@@ -6,24 +6,20 @@ import (
 )
 
 type Page struct {
-	mot        string
-	tentatives int
-	pose       string
-	deja       string
+	Mot        string
+	Tentatives int
+	Pose       string
+	Deja       string
 }
 
 func main() {
 	tmpl1 := template.Must(template.ParseFiles("jeu_hangman.html"))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			tmpl1.Execute(w, nil)
-			return
-		}
 		details := Page{
-			mot:        "LEMOT",
-			tentatives: 10,
-			pose:       "img",
-			deja:       "a,g,s,t,motdefou,rgb",
+			Mot:        "LEMOT",
+			Tentatives: 10,
+			Pose:       "img",
+			Deja:       "a,g,s,t,motdefou,rgb",
 		}
 		tmpl1.Execute(w, details)
 	})
