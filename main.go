@@ -23,7 +23,8 @@ func main() {
 		}
 		tmpl1.Execute(w, details)
 	})
-	http.ListenAndServe(":80", nil)
 	fs := http.FileServer(http.Dir("css"))
 	http.Handle("/css/", http.StripPrefix("/css/", fs))
+	http.ListenAndServe(":80", nil)
+	
 }
