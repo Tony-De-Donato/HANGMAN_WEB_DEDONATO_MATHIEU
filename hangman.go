@@ -9,36 +9,7 @@ import (
 	"time"
 )
 
-func principale() {
-	//
-	fmt.Println("Bienvenue dans notre jeu hangman.")
-	menu()
-
-}
-
 //_______________________________________________________________________________________________________________________________________
-
-func menu() {
-	//affichage des différents choix, récupération de l'entrrée utilisateur et gestion de cette dernière
-	fmt.Println("Que souhaitez vous faire ?")
-	fmt.Println("1 : lancer une nouvelle partie")
-	fmt.Println("2 : voir les règles")
-	fmt.Println("3 ou autre : arrêter le terminal")
-	var reponse int
-	fmt.Scan(&reponse)
-	switch reponse {
-	case 1:
-		choix_personnage()
-	case 2:
-		affichage_regle()
-	}
-}
-func affichage_regle() {
-	//affichage des règles du jeu, renvoie ensuite au menu
-	fmt.Println("Le jeu du Hangman consiste à trouver un mot choisit aléatoirement par l'ordinateur.\nVous avez 10 tentatives pour trouver le mot.\nSi vous trouvez le mot avant d'avoir utilisé toutes vos tentatives, vous gagnez.\nSi vous n'avez plus de tentatives, vous perdez.\nBonne chance !!!")
-	time.Sleep(6 * time.Second)
-	menu()
-}
 
 // _______________________________________________________________________________________________________________________________________
 func transforme_en_liste(fichier *os.File) []string {
@@ -69,7 +40,7 @@ func liste_position(fichier *os.File) []string {
 	}
 	return liste
 }
-func choix_personnage() {
+func Choix_personnage(diff int) {
 	file1, err1 := os.Open("words_1.txt")
 	if err1 != nil {
 		log.Fatal(err1)
@@ -85,8 +56,14 @@ func choix_personnage() {
 	file1_liste := transforme_en_liste(file1)
 	file2_liste := transforme_en_liste(file1_2)
 	file3_liste := transforme_en_liste(file1_3)
-	file1_liste = append(file1_liste, file2_liste...)
-	file1_liste = append(file1_liste, file3_liste...)
+	var laliste []string
+	if diff == 1 {
+		laliste = file1_liste
+	} else if diff == 2 {
+		laliste = file2_liste
+	} else {
+		laliste = file3_liste
+	}
 	//regroupement des trois listes provenants des fichiers dans un seul
 	file1.Close()
 	file1_2.Close()
@@ -104,8 +81,8 @@ func choix_personnage() {
 	var nom string
 	fmt.Scan(&nom) // récupération de l'entrée utilisateur pour nommer le hangman
 	var personnage HangManData
-	mot := nouveau_mot(file1_liste)                                          // récupération d'un mot aléatoire dans la liste des trois fichiers textes
-	personnage.Init(nom, mot, word_with_blank(mot), 10, liste_des_positions) // initialisation de la stucture contenant les informations relatives au jeu
+	mot := nouveau_mot(laliste)                                         // récupération d'un mot aléatoire dans la liste des trois fichiers textes
+	personnage.Init(mot, word_with_blank(mot), 10, liste_des_positions) // initialisation de la stucture contenant les informations relatives au jeu
 	lancement_jeu(personnage)
 }
 
@@ -126,7 +103,7 @@ func lancement_jeu(h HangManData) {
 func (h *HangManData) jouer_tour() {
 
 	fmt.Println("\nIl vous reste", h.Attempts, "essais.")
-	fmt.Println("Voici la pose actuelle de", h.nom, ":\n ")
+	fmt.Println("Voici la pose actuelle du hangman :\n ")
 	fmt.Println(h.ActualPosition)
 	fmt.Println("Voici les lettres que vous avez déja essayées :", h.UsedLetter)
 	fmt.Println("Voici ce que vous avez trouvé du mot :", h.Word)
@@ -175,7 +152,6 @@ func (h HangManData) perdu() {
 //_________________________________________________________________________________________________________________________________________
 
 type HangManData struct {
-	nom              string   // nom du Hangman
 	Word             string   // mot composé de '_', ex: H_ll_
 	ToFind           string   // mot à trouver
 	Attempts         int      // nombre de tentatives restantes
@@ -184,9 +160,9 @@ type HangManData struct {
 	UsedLetter       []string // liste des lettre déjà proposées par l'utilisateur
 }
 
-func (h *HangManData) Init(nom string, a_trouver string, mot_actuel string, tentatives int, liste_pose []string) {
+func (h *HangManData) Init(a_trouver string, mot_actuel string, tentatives int, liste_pose []string) {
 	// initialisation du hangman
-	h.nom = nom
+
 	h.ToFind = a_trouver
 	h.Word = mot_actuel
 	h.Attempts = tentatives
@@ -301,14 +277,7 @@ func (h *HangManData) AjoutLettre(lettre string) {
 func relance() {
 	// affichage du menu de relance + gestion de l'entrée utilisateur
 	fmt.Println("\nQue souhaitez vous faire ?\n1 : relancer une partie\n2 : Quitter")
-	var rep int
-	fmt.Scan(&rep)
-	switch rep {
-	case 1:
-		choix_personnage()
-	case 2:
-		Quit()
-	}
+
 }
 
 func (h *HangManData) Victoire() {

@@ -10,10 +10,7 @@
 </head>
 
 <body>
-    {{if .Success}}
-    <a href="https://tony-de-donato.github.io/">aller sur le site</a>
-
-    {{else}}
+    
     <div>
         <h1>Hangman</h1>
     </div>
@@ -22,17 +19,16 @@
     </div>
     <form method="POST">
         <div>
-            <input type="radio" id="Hangman" name="choix" value="Hangman">
-            <label for="Hangman">Jouer au Hangman</label>
+            <input id="Hangman1" class="choix" value="facile" type="submit">
         </div>
         <div>
-            <input type="radio" id="jeu2" name="choix" value="jeu2">
-            <label for="jeu2">Essayer un autre jeu</label>
-        </div><br />
-        <input type="submit">
+            <input id="Hangman2" class="choix" value="moyen" type="submit">
+        </div>
+        <div>
+            <input id="Hangman3" class="choix" value="difficlie" type="submit">
+        </div>
+        <br />
     </form>
-
-    {{end}}
 </body>
 
 </html>

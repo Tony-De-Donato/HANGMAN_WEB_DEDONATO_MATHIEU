@@ -14,7 +14,7 @@
         <p id="atrouver"><strong>{{ .Mot }}</strong></p>
         <p>Il vous reste {{ .Tentatives }} tentatives.</p>
         <p>Quelle lettre / Quel mot voulez vous essayer ?</p>
-        <form>
+        <form method="POST">
             <input type="text" name="reponse">
             <input type="submit">
         </form>
