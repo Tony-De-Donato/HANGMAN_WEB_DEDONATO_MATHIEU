@@ -19,9 +19,12 @@ func main() {
 			Mot:        "LEMOT",
 			Tentatives: 10,
 			Pose:       "img",
-			Deja:       "a,g,s,t,motdefou,rgb",
+			Deja:       "a",
 		}
 		tmpl1.Execute(w, details)
 	})
+	fs := http.FileServer(http.Dir("css"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs))
 	http.ListenAndServe(":80", nil)
+	
 }
