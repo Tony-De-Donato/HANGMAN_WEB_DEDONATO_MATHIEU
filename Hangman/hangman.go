@@ -40,7 +40,7 @@ func liste_position(fichier *os.File) []string {
 	}
 	return liste
 }
-func Choix_personnage(diff int) {
+func Choix_difficulte(diff int) {
 	file1, err1 := os.Open("words_1.txt")
 	if err1 != nil {
 		log.Fatal(err1)
