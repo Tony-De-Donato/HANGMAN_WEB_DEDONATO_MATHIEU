@@ -10,10 +10,8 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		if r.FormValue("Hangman1") == "1" {
-			tpml2 := template.Must(template.ParseFiles("jeu_hangman.html"))
-			http.HandleFunc("/jeu", func(w http.ResponseWriter, r *http.Request) {
-				tpml2.Execute(w, nil)
-			})
+			tmpl1 = template.Must(template.ParseFiles("jeu_hangman.html"))
+			lancer(1)
 		}
 		tmpl1.Execute(w, nil)
 	})
@@ -21,10 +19,6 @@ func main() {
 	http.ListenAndServe(":80", nil)
 
 }
-
 func lancer(nbr int) {
-	tpml2 := template.Must(template.ParseFiles("jeu_hangman.html"))
-	http.HandleFunc("/jeu", func(w http.ResponseWriter, r *http.Request) {
-		tpml2.Execute(w, nil)
-	})
+
 }
