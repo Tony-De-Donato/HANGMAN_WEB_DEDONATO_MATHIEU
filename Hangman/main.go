@@ -13,28 +13,11 @@ import (
 
 func main() {
 	http.HandleFunc("/", jeu_hangman)
-	//http.HandleFunc("/jeu", jeu_hangman)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	http.ListenAndServe(":80", nil)
 
 }
-func acceuil(w http.ResponseWriter, r *http.Request) {
-	tmpl1, err := template.ParseFiles("acceuil_hangman.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	tmpl1.Execute(w, nil)
-	if r.FormValue("Hangman1") == "1" {
-		jeu_hangman(w, r)
-	}
-}
 
-type perso struct {
-	Hang    HangManData
-	Annonce string
-}
-
-var Player perso
+var Player HangManData = Choix_difficulte(1)
 
 func jeu_hangman(w http.ResponseWriter, r *http.Request) {
 
@@ -43,23 +26,11 @@ func jeu_hangman(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	if Player.Hang.Attempts == 0 { //si le joueur n'a pas de partie en cours ou qu'il a fini une partie
-		Player.Hang = Choix_difficulte(1)
-		Player.Annonce = "test"
-		fmt.Println("ca choisi")
-		tmpl2.Execute(w, Player)
-	} else { //si le joueur a déjà commencé la partie
-		if r.FormValue("lettre") != "" { //si le joueur n'a pas encore choisi de lettre
-			Player.Hang.jouer_tour(r.FormValue("lettre")) //on bloque le double appel de la fonction de fin de partie
-			if Player.Hang.Word == Player.Hang.ToFind {   //si le joueur a gagné
-				Player.Annonce = "Vous avez gagné ! Le mot était bien : " + Player.Hang.ToFind
-				//on mets les essaie à 0 pour forcer la fin de la partie
-
-			}
-			tmpl2.Execute(w, Player)
-		}
+	if r.FormValue("lettre") != "" {
+		Player.jouer_tour(r.FormValue("lettre"))
 	}
+	tmpl2.Execute(w, Player)
+
 }
 
 //_________________________________________________________________________________________________________________________________________
@@ -138,31 +109,13 @@ func Choix_difficulte(diff int) HangManData {
 	return personnage
 }
 
-func lancement_jeu(h HangManData) {
-
-	for h.Attempts > 0 { // la boucle tourne tant qu'il reste des essais au joueur
-		if h.Word == h.ToFind {
-			h.Victoire()
-		} else {
-			h.jouer_tour("")
-		}
-	}
-	if h.Attempts == 0 {
-		h.perdu()
-	}
-}
-
 func (h *HangManData) jouer_tour(lettre string) {
-
-	fmt.Println("\nProposez une lettre (coute un essai) ou un mot (coute deux essais) :")
 
 	if len(lettre) == 1 { // si le joueur propose une lettre
 		h.AjoutLettre(lettre)      // elle est ajoutée à la liste des lettres déja utilisées si elle n'y est pas déjà
 		if h.verifletter(lettre) { // si la lettre est présente dans le mot
-			fmt.Println(" \nCette lettre fait bien partie du mot, bravo !")
 			h.remplace(lettre) // elle remplace les blancs dans le mot montré au joueur
 		} else {
-			fmt.Println("Vous vous êtes trompé.")
 			h.Attempts -= 1 //le nombre d'essais baisse de 1
 			if h.Attempts != 0 {
 				h.ActualPosition = h.HangmanPositions[10-h.Attempts] // mise à jour de la position du pendu
@@ -172,7 +125,6 @@ func (h *HangManData) jouer_tour(lettre string) {
 		if lettre == h.ToFind { // si c'est le bon mot
 			h.Word = lettre // le mot que voit le joueur est remplacé par la proposition (permet de faire gagner le joueur à la fin du tour)
 		} else { //si ce n'est pas le bon mot
-			fmt.Println("Ce n'est pas le bon mot, vous perdez deux essais.")
 			h.Attempts -= 2 // le nombre d'essais diminue de 2
 			if h.Attempts < 0 {
 				h.Attempts = 0 // permet de gérer le fait que le nombre d'essais descende en dessous de 0
@@ -182,14 +134,6 @@ func (h *HangManData) jouer_tour(lettre string) {
 			}
 		}
 	}
-}
-
-func (h HangManData) perdu() {
-	// affichage ne cas de défaite, le mot est dévoilé au joueur puis ce dernier est renvoyé au menu de relance
-	fmt.Println("\nVous avez perdu !!!")
-	fmt.Println("Le mot était", h.ToFind)
-	time.Sleep(3 * time.Second)
-	relance()
 }
 
 //_________________________________________________________________________________________________________________________________________
@@ -301,18 +245,6 @@ func (h *HangManData) AjoutLettre(lettre string) {
 
 	} else if h.LettreUtilise(lettre) == false {
 		h.UsedLetter = append(h.UsedLetter, lettre)
-	}
-}
-func relance() {
-	// affichage du menu de relance + gestion de l'entrée utilisateur
-	fmt.Println("\nQue souhaitez vous faire ?\n1 : relancer une partie\n2 : Quitter")
-
-}
-
-func (h *HangManData) Victoire() {
-	if h.ToFind == h.Word { // vérifie si le mot est trouvé
-		fmt.Printf("\nVous avez trouvé le mot %s, félicitations.", h.ToFind) //affichage du mot
-		relance()                                                            // renvoie au menu de relance
 	}
 }
 

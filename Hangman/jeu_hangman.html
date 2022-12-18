@@ -13,22 +13,33 @@
     <div id="jeu">
     <div id="gauche">
         <p>Voici le mot :</p>
-        <p id="atrouver"><strong>{{ .Hang.Word }}</strong></p>
-        <p>Il vous reste {{ .Hang.Attempts }} tentatives.</p>
+        <p id="atrouver"><strong>{{ .Word }}</strong></p>
+        <p>Il vous reste {{ .Attempts }} tentatives.</p>
         <p>Quelle lettre / Quel mot voulez vous essayer ?</p>
-        <form method="POST" action ="/">
+        <form method="POST">
             <input type="text" name="reponse">
-            <input type="submit">
+            <input type="submit" value="valider">
         </form>
         <p>Voici les lettres ou mots que vous avez déjà essayé.</p>
-        <p> {{ .Hang.UsedLetter }}</p>
-        <p> {{ .Annonce }}</p>
+        <p> {{ .UsedLetter }}</p>
+        
     </div>
+    <div id="droite"><p> {{ .ActualPosition }}</p></div>
 </body>
 
 </html>
 
 <style>
+    #droite {
+        display: flex;
+        width: 60%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        font-size: x-large;
+        font-family: Arial, Helvetica, sans-serif;
+        border: solid black ;
+    }
     #gauche {
     display: flex;
     width: 40%;

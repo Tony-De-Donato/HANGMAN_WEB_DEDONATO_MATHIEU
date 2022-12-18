@@ -1,0 +1,21 @@
+Philippe Mathieu , Tony de Donato
+
+Nous nous sommes répartis les taches en foncion de ce que l'on maitrisait le mieux.
+Malheureusement, un mauvaise gestion du temps et des priorités nous a grandement impacté.
+désolé :,(
+
+
+REPARTITION DES TACHES:
+
+modifications du Hangman d'origine: Tony 
+
+main.go: Tony + Philippe
+
+css: Philippe
+
+Html: Tony  
+
+
+
+
+
