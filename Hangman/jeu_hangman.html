@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <div id="jeu">
     <div id="gauche">
         <p>Voici le mot :</p>
         <p id="atrouver"><strong>{{ .Hang.Word }}</strong></p>
@@ -19,14 +20,47 @@
             <input type="text" name="reponse">
             <input type="submit">
         </form>
-        <p>Voici les lettres ou mots que vous avez déjà essayé:</p>
+        <p>Voici les lettres ou mots que vous avez déjà essayé.</p>
         <p> {{ .Hang.UsedLetter }}</p>
         <p> {{ .Annonce }}</p>
-    </div>
-    <div>
-        <p>{{ .Hang.AcualPosition }}</p>
     </div>
 </body>
 
 </html>
 
+<style>
+    #gauche {
+    display: flex;
+    width: 40%;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    font-size: x-large;
+    font-family: Arial, Helvetica, sans-serif;
+    border: solid black ;
+
+}
+
+body {
+    background: linear-gradient(-275deg, #8256cc97, #17b9bc76);
+}
+
+#atrouver {
+    font-size: xxx-large;
+}
+
+#Hangman{
+    border: black solid;
+    padding: 10px;
+    height: 250px;
+    width: 25%;
+    margin: 10%
+}
+
+#jeu{
+    display: flex;
+    align-items: center;
+    min-width: 100%;
+    
+}
+</style>
